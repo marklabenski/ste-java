@@ -1,9 +1,6 @@
 package ste;
-import ste.crypto.CryptoBackend;
 
-import java.util.Scanner;
-
-import static java.lang.System.*;
+import ste.ipc.SocketIPCClient;
 
 /**
  * Created by marklabenski on 09.05.17.
@@ -11,12 +8,13 @@ import static java.lang.System.*;
 public class SecureTextEditor {
     public static void main(String[] args) throws Exception
     {
-        CryptoBackend cryptoBackend = CryptoBackend.getInstance();
+        //CryptoBackend cryptoBackend = CryptoBackend.getInstance();
+        SocketIPCClient socketListener = SocketIPCClient.getInstance();
 
-        Scanner scan = new Scanner(System.in);
+        System.out.println("ste java started");
 
-        String next = scan.nextLine();
+        while(!socketListener.isDisconnected) {
 
-        out.println(next);
+        }
     }
 }
