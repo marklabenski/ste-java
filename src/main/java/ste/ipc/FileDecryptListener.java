@@ -4,6 +4,7 @@ import org.json.JSONObject;
 import ste.crypto.CryptoBackend;
 import ste.crypto.FileEncryptionSettingsTransferObject;
 
+import java.security.InvalidKeyException;
 import java.util.Arrays;
 
 /**
@@ -21,8 +22,9 @@ public class FileDecryptListener extends AbstractListener {
     }
 
     public void call(Object... objects) {
+        JSONObject fileToEncryptObj = null;
         try {
-            JSONObject fileToEncryptObj = (JSONObject) objects[0];
+            fileToEncryptObj = (JSONObject) objects[0];
             FileEncryptionSettingsTransferObject encryptionSettings = new FileEncryptionSettingsTransferObject(fileToEncryptObj);
 
             String secret = fileToEncryptObj.getString("secret");
@@ -34,6 +36,8 @@ public class FileDecryptListener extends AbstractListener {
             fileToEncryptObj.put("fileContent", fileContent);
 
             this.socketClientInstance.emitEvent(this.FILE_DECRYPTED_EVENT, fileToEncryptObj);
+        } catch (InvalidKeyException e) {
+            this.socketClientInstance.emitEvent("wrong-key", fileToEncryptObj);
         } catch (Exception e) {
             System.err.println("1");
             System.err.println(e);

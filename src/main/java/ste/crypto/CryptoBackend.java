@@ -25,13 +25,14 @@ public class CryptoBackend {
     }
 
     private CryptoBackend() {
-        //Security.addProvider(new BouncyCastleProvider());
+        // can't add provider at runtime. Thanks maven...
+        // Security.addProvider(new BouncyCastleProvider());
     }
 
     public String simpleEncrypt(FileEncryptionSettingsTransferObject encryptionSettings, String fileContent) throws NoSuchPaddingException, NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, ShortBufferException, BadPaddingException, IllegalBlockSizeException, UnsupportedEncodingException {
         Cipher cipher = Cipher.getInstance(encryptionSettings.cipherSuite, "BC");
         byte[] key = encryptionSettings.key.getBytes("UTF-8");
-        SecretKeySpec spec = new SecretKeySpec(key, "DES");
+        SecretKeySpec spec = new SecretKeySpec(key, encryptionSettings.keySuite);
         cipher.init(Cipher.ENCRYPT_MODE, spec);
         return new String(Base64.encode(cipher.doFinal(fileContent.getBytes("UTF-8"))),  "US-ASCII");
     }
@@ -39,7 +40,7 @@ public class CryptoBackend {
     public String simpleDecrypt(FileEncryptionSettingsTransferObject encryptionSettings, String cypherText) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, NoSuchProviderException, ShortBufferException, UnsupportedEncodingException {
         Cipher cipher = Cipher.getInstance(encryptionSettings.cipherSuite, "BC");
         byte[] key = encryptionSettings.key.getBytes("UTF-8");
-        SecretKeySpec spec = new SecretKeySpec(key, "DES");
+        SecretKeySpec spec = new SecretKeySpec(key, encryptionSettings.keySuite);
         cipher.init(Cipher.DECRYPT_MODE, spec);
         System.out.println(cypherText);
         byte[] base64DecodedCipherText = Base64.decode(cypherText.getBytes());
