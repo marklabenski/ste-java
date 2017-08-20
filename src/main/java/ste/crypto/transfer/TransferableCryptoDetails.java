@@ -1,6 +1,5 @@
 package ste.crypto.transfer;
 
-import ste.crypto.CryptoBackend;
 import ste.crypto.settings.CryptoSettings;
 
 /**

@@ -2,10 +2,7 @@ package ste.ipc;
 
 import org.json.JSONObject;
 import ste.crypto.AvailableCryptoMethods;
-import ste.crypto.CryptoBackend;
-import ste.crypto.FileEncryptionSettingsTransferObject;
 
-import java.security.InvalidKeyException;
 import java.util.Arrays;
 
 /**

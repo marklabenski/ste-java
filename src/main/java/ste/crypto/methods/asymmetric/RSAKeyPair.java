@@ -52,11 +52,6 @@ public class RSAKeyPair extends AbstractKeyPairGenerator {
         return new TransferableCryptoDetails("keyPair", keyPair, cryptoSettings);
     }
 
-    public static byte[] extractPublicKeyFromKeyPairString(String keyPair) {
-        String[] parts = keyPair.split("|");
-        return Base64.decode(parts[0].getBytes());
-    }
-
     public static SecureRandom generateSecureRandom() {
         SecureRandom retSecRand = null;
         try {

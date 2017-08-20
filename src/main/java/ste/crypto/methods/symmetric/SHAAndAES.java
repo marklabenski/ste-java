@@ -56,9 +56,6 @@ public class SHAAndAES extends AbstractPBCryptoMethod {
         Key sKey = generateKey(cryptoSettings);
         Cipher cipher = Cipher.getInstance("PBEWithSHA1And128BitAES-CBC-BC", "BC");
 
-        String base64Key = new String(Base64.encode(sKey.getEncoded()));
-        cryptoSettings.addOption("key", base64Key);
-
         cipher.init(Cipher.ENCRYPT_MODE, sKey);
 
         String base64Secret = new String(Base64.encode(cipher.doFinal(plainText.getBytes("UTF-8"))), "US-ASCII");

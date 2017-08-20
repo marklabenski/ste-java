@@ -24,7 +24,7 @@ public class RSA extends AbstractAsymmetricCryptoMethod {
         {
             {
                 put("keyLength", new MethodOptionDescription("Int", Arrays.asList("1024", "4096")));
-                put("padding", new MethodOptionDescription("String", Arrays.asList("NoPadding", "PKCS7Padding")));
+                put("padding", new MethodOptionDescription("String", Arrays.asList("NoPadding")));
                 put("publicKey", new MethodOptionDescription("String"));
                 put("privateKey", new MethodOptionDescription("String"));
             }
@@ -68,6 +68,7 @@ public class RSA extends AbstractAsymmetricCryptoMethod {
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(pubKeyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         Key pubKey = keyFactory.generatePublic(keySpec);
+
 
         cipher.init(Cipher.ENCRYPT_MODE, pubKey, RSAKeyPair.generateSecureRandom());
 

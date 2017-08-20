@@ -56,8 +56,6 @@ public class SHAAndRC4 extends AbstractPBCryptoMethod {
         Key sKey = generateKey(cryptoSettings);
         Cipher cipher = Cipher.getInstance("PBEWithSHAAnd40BitRC4", "BC");
 
-        String base64Key = new String(Base64.encode(sKey.getEncoded()));
-        cryptoSettings.addOption("key", base64Key);
 
         cipher.init(Cipher.ENCRYPT_MODE, sKey);
 

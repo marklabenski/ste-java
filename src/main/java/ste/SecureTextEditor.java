@@ -23,7 +23,7 @@ public class SecureTextEditor {
 
         System.out.println("ste java started");
 
-        AvailableCryptoMethods methods = AvailableCryptoMethods.getInstance();
+        /*AvailableCryptoMethods methods = AvailableCryptoMethods.getInstance();
 
         //methods.executeAlgorithmMethod("DES", "encrypt", new JSONObject());
 
@@ -33,13 +33,11 @@ public class SecureTextEditor {
 
         System.out.println(test.getJSONArray("cryptoMethods").getJSONObject(0).getString("name"));
 
-
         CryptoSettings test2 = new CryptoSettings();
 
         test2.addOption("password", "hallo");
         test2.addOption("salt", "12345678");
         test2.addOption("iterationCount", "2048");
-
 
 
         AbstractPBCryptoMethod destest = new SHAAndRC4();
@@ -103,8 +101,7 @@ public class SecureTextEditor {
         System.out.println(hashValue3);
 
         System.out.println(cipherText);
-        System.out.println(plainText);
-
+        System.out.println(plainText);*/
 
 
         while(!socketListener.isDisconnected) {

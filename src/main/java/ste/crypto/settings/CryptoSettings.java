@@ -1,7 +1,6 @@
 package ste.crypto.settings;
 
 import org.json.JSONObject;
-import ste.crypto.CryptoBackend;
 
 import java.util.HashMap;
 

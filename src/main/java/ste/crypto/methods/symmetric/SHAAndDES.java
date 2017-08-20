@@ -56,8 +56,6 @@ public class SHAAndDES extends AbstractPBCryptoMethod {
         Key sKey = generateKey(cryptoSettings);
         Cipher cipher = Cipher.getInstance("PBEWithMD5AndDES", "BC");
 
-        String base64Key = new String(Base64.encode(sKey.getEncoded()));
-        cryptoSettings.addOption("key", base64Key);
 
         cipher.init(Cipher.ENCRYPT_MODE, sKey);
 

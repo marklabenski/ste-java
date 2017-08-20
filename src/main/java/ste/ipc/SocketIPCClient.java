@@ -4,12 +4,8 @@ import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 import org.json.JSONObject;
-import ste.crypto.AvailableCryptoMethods;
-import ste.crypto.CryptoBackend;
 
-import javax.swing.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by marklabenski on 23.05.17.

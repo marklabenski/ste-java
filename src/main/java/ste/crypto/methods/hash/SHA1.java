@@ -34,12 +34,10 @@ public class SHA1 extends AbstractMessageDigestMethod {
     public TransferableCryptoDetails hash(CryptoSettings cryptoSettings, String input) throws Exception {
         MessageDigest md = MessageDigest.getInstance("SHA1");
         Integer iterationCount = Integer.parseInt(cryptoSettings.getStringOption("iterationCount"));
-        for(Integer i = 0; i <= iterationCount; i++) {
+        for(Integer i = 0; i < iterationCount; i++) {
             md.update(input.getBytes("UTF-8"));
         }
 
-        String base64Secret = new String(Base64.encode(md.digest()), "US-ASCII");
-
-        return new TransferableCryptoDetails("hashValue", base64Secret, cryptoSettings);
+        return new TransferableCryptoDetails("hashValue", this.convertDigestBytesToBase64String(md.digest()), cryptoSettings);
     }
 }
