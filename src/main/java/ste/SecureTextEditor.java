@@ -1,19 +1,12 @@
 package ste;
 
-import org.json.JSONObject;
-import ste.crypto.AvailableCryptoMethods;
-import ste.crypto.methods.asymmetric.RSA;
-import ste.crypto.methods.asymmetric.RSAKeyPair;
-import ste.crypto.methods.hash.MD5;
-import ste.crypto.methods.hash.SHA2;
-import ste.crypto.methods.symmetric.AbstractPBCryptoMethod;
-import ste.crypto.methods.symmetric.SHAAndRC4;
-import ste.crypto.settings.CryptoSettings;
-import ste.crypto.transfer.TransferableCryptoDetails;
 import ste.ipc.SocketIPCClient;
 
 /**
- * Created by marklabenski on 09.05.17.
+ * API with cryptographic algorithms that connects to a socket server via Socket.IO
+ * and provides methods on these algorithms for consumers
+ *
+ * @author Mark Labenski
  */
 public class SecureTextEditor {
     public static void main(String[] args) throws Exception
