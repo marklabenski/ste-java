@@ -17,7 +17,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 /**
- * Created by marklabenski on 04.07.17.
+ * DES implemtation
+ *
+ * @author Mark Labenski
  */
 public class DES extends AbstractSymmetricCryptoMethod {
     static {
@@ -38,37 +40,57 @@ public class DES extends AbstractSymmetricCryptoMethod {
         };
     }
 
+    // randomly picket IV for some block modes
     private static final byte[] ivBytes = new byte[] {
             0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01, 0x00 };
 
+    /**
+     * DES decryption of a given cipherText using the "key" option from Settings
+     *
+     * @param cryptoSettings
+     * @param cipherText
+     * @return
+     * @throws Exception
+     */
     public TransferableCryptoDetails decrypt(CryptoSettings cryptoSettings, String cipherText) throws Exception {
-
         Cipher cipher = Cipher.getInstance(getCipherSuiteFromCryptoSettings(cryptoSettings), "BC");
+
+        // get key from options
         byte[] key = Base64.decode(cryptoSettings.getStringOption("key").getBytes("UTF-8"));
         SecretKeySpec spec = new SecretKeySpec(key, "DES");
 
+        // some block modes need the IV
         if(cryptoSettings.getStringOption("blockMode").equals("ECB")) {
             cipher.init(Cipher.DECRYPT_MODE, spec);
         } else {
             cipher.init(Cipher.DECRYPT_MODE, spec, new IvParameterSpec(ivBytes));
         }
 
-        System.out.println(cipherText);
         byte[] base64DecodedCipherText = Base64.decode(cipherText.getBytes());
-        byte[] text = cipher.doFinal(base64DecodedCipherText);
+        byte[] plainText = cipher.doFinal(base64DecodedCipherText);
 
-        return new TransferableCryptoDetails("plainText", new String(text, "US-ASCII"), cryptoSettings);
+        return new TransferableCryptoDetails("plainText", new String(plainText, "US-ASCII"), cryptoSettings);
     }
 
+    /**
+     * DES encryption of a given plainText
+     * The cryptographic key needed for encryption will be generated and placed back into the settings object
+     * for consumers who need later decryption
+     *
+     * @param cryptoSettings
+     * @param plainText
+     * @return Settings where the "key" option is added and the cipher text as payload
+     * @throws Exception
+     */
     public TransferableCryptoDetails encrypt(CryptoSettings cryptoSettings, String plainText) throws Exception {
-
         Cipher cipher = Cipher.getInstance(getCipherSuiteFromCryptoSettings(cryptoSettings), "BC");
 
-        KeyGenerator keygen = KeyGenerator.getInstance("DES", "BC");
-        keygen.init(64);
+        // generate a DES key with 64 bytes
+        KeyGenerator keyGen = KeyGenerator.getInstance("DES", "BC");
+        keyGen.init(64);
+        Key encryptionKey = keyGen.generateKey();
 
-        Key encryptionKey = keygen.generateKey();
-
+        // add the key options to settings
         String base64Key = new String(Base64.encode(encryptionKey.getEncoded()));
         cryptoSettings.addOption("key", base64Key);
 
@@ -77,12 +99,17 @@ public class DES extends AbstractSymmetricCryptoMethod {
         } else {
             cipher.init(Cipher.ENCRYPT_MODE, encryptionKey, new IvParameterSpec(ivBytes));
         }
-        String base64Secret = new String(Base64.encode(cipher.doFinal(plainText.getBytes("UTF-8"))), "US-ASCII");
+        String cipherText = new String(Base64.encode(cipher.doFinal(plainText.getBytes("UTF-8"))), "US-ASCII");
 
-
-        return new TransferableCryptoDetails("cipherText", base64Secret, cryptoSettings);
+        return new TransferableCryptoDetails("cipherText", cipherText, cryptoSettings);
     }
 
+    /**
+     * concat the Instance string needed for JCA according to the given Settings
+     *
+     * @param settings
+     * @return
+     */
     private String getCipherSuiteFromCryptoSettings(CryptoSettings settings) {
         return "DES" + "/" + settings.getStringOption("blockMode") + "/" + settings.getStringOption("padding");
     }

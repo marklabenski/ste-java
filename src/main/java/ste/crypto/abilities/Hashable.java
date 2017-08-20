@@ -3,11 +3,19 @@ package ste.crypto.abilities;
 import ste.crypto.settings.CryptoSettings;
 import ste.crypto.transfer.TransferableCryptoDetails;
 
-import java.security.NoSuchAlgorithmException;
-
 /**
- * Created by marklabenski on 28.06.17.
+ * Ability to hash an input string and return the hash value
+ *
+ * @author Mark Labenski
  */
 public interface Hashable {
-    public TransferableCryptoDetails hash(CryptoSettings cryptoSettings, String input) throws Exception;
+    /**
+     * cryptographic hash method
+     *
+     * @param cryptoSettings
+     * @param input
+     * @return
+     * @throws Exception
+     */
+    TransferableCryptoDetails hash(CryptoSettings cryptoSettings, String input) throws Exception;
 }

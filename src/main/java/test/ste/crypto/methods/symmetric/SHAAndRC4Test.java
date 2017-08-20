@@ -5,7 +5,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import ste.crypto.methods.symmetric.AbstractPBCryptoMethod;
-import ste.crypto.methods.symmetric.SHAAndDES;
 import ste.crypto.methods.symmetric.SHAAndRC4;
 import ste.crypto.settings.CryptoSettings;
 import ste.crypto.transfer.TransferableCryptoDetails;

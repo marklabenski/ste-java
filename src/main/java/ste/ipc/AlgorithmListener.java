@@ -2,52 +2,57 @@ package ste.ipc;
 
 import org.json.JSONObject;
 import ste.crypto.AvailableCryptoMethods;
-
 import java.util.Arrays;
 
 /**
- * Created by marklabenski on 24.05.17.
+ * listen for execution of an available algorithm
+ *
+ * @author Mark Labenski
  */
 public class AlgorithmListener extends AbstractListener {
+    /**
+     * name of the listen event
+     */
     private final String EVENT_NAME = "crypt.exec-algorithm";
 
+    /**
+     * name of the reaction event
+     */
     private final String EMIT_EVENT_NAME = "crypt.exec-algorithm";
 
-    public AlgorithmListener(SocketIPCClient _socketClientInstance) {
+    /**
+     * constructor with getting client instance and defines event name
+     *
+     * @param _socketClientInstance
+     */
+    AlgorithmListener(SocketIPCClient _socketClientInstance) {
         super(_socketClientInstance);
 
         this.eventName = this.EVENT_NAME;
     }
 
+    /**
+     * called on event emit
+     *
+     * @param objects objects in JSON format
+     */
     public void call(Object... objects) {
         try {
+            // first parameter is JSONObject of algorithm information and settings
             JSONObject execAlgoObj = (JSONObject) objects[0];
 
             execAlgoObj.getString("algorithm");
             execAlgoObj.getJSONObject("options");
-            System.out.println( execAlgoObj.getString("algorithm"));
-            System.out.println( execAlgoObj.getJSONObject("options"));
 
+            // call algorithm method
             JSONObject algorithmResult = AvailableCryptoMethods.getInstance().executeAlgorithmMethod(
                     execAlgoObj.getString("algorithm"),
                     execAlgoObj.getString("method"),
                     execAlgoObj.getJSONArray("parameters"),
                     execAlgoObj.getJSONObject("options"));
 
-
+            // emit reaction event and pass result
             this.socketClientInstance.emitEvent(this.EMIT_EVENT_NAME, algorithmResult);
-            /*FileEncryptionSettingsTransferObject encryptionSettings = new FileEncryptionSettingsTransferObject(fileToEncryptObj);
-
-            String fileContent = fileToEncryptObj.getString("fileContent");
-
-            CryptoBackend crypt = CryptoBackend.getInstance();
-            EncryptedFileTransferObject encryptedFile = crypt.simpleEncrypt(encryptionSettings, fileContent);
-
-            fileToEncryptObj.remove("fileContent");
-            fileToEncryptObj.put("secret", encryptedFile.base64EncryptedFileContent);
-            fileToEncryptObj.put("encryptionSettings", encryptedFile.fileEncryptionSettings.encryptionSettings);*/
-
-            //this.socketClientInstance.emitEvent(this.EMIT_EVENT_NAME, fileToEncryptObj);
         } catch (Exception e) {
             System.err.println("1");
             System.err.println(e);

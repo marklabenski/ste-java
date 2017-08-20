@@ -1,6 +1,5 @@
 package ste.crypto.methods.hash;
 
-import org.bouncycastle.util.encoders.Base64;
 import ste.crypto.methods.AlgoMethodDescription;
 import ste.crypto.methods.CryptoMethod;
 import ste.crypto.methods.MethodOptionDescription;
@@ -12,7 +11,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 /**
- * Created by marklabenski on 04.07.17.
+ * SHA1 implementation
+ *
+ * @author Mark Labenski
  */
 public class SHA1 extends AbstractMessageDigestMethod {
     static {
@@ -34,6 +35,8 @@ public class SHA1 extends AbstractMessageDigestMethod {
     public TransferableCryptoDetails hash(CryptoSettings cryptoSettings, String input) throws Exception {
         MessageDigest md = MessageDigest.getInstance("SHA1");
         Integer iterationCount = Integer.parseInt(cryptoSettings.getStringOption("iterationCount"));
+
+        // hash the input as often as given in "iterationCount" option
         for(Integer i = 0; i < iterationCount; i++) {
             md.update(input.getBytes("UTF-8"));
         }

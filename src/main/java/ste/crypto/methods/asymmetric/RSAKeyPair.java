@@ -12,7 +12,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 /**
- * Created by marklabenski on 04.07.17.
+ * Generation of Key Pair for usage in RSA method
+ *
+ * @author Mark Labenski
  */
 public class RSAKeyPair extends AbstractKeyPairGenerator {
     static {
@@ -30,28 +32,39 @@ public class RSAKeyPair extends AbstractKeyPairGenerator {
         };
     }
 
+    /**
+     * Generate the key pair in the layout described in ste.crypto.abilities.KeyPairGeneratable
+     *
+     * @see ste.crypto.abilities.KeyPairGeneratable
+     * @param cryptoSettings
+     * @return
+     * @throws Exception
+     */
     public TransferableCryptoDetails generateKeyPair(CryptoSettings cryptoSettings) throws Exception {
-
         Integer keyLength = Integer.parseInt(cryptoSettings.getStringOption("keyLength"));
 
         KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA", "BC");
-        SecureRandom     random = generateSecureRandom();
+
+        SecureRandom random = generateSecureRandom();
         generator.initialize(keyLength, random);
 
         KeyPair pair = generator.generateKeyPair();
-        Key              pubKey = pair.getPublic();
-        Key              privKey = pair.getPrivate();
+        Key pubKey = pair.getPublic();
+        Key privKey = pair.getPrivate();
 
-        System.out.println(pubKey);
-        System.out.println(privKey);
         byte[] base64EncodedPubKey = Base64.encode(pubKey.getEncoded());
         byte[] base64EncodedPrivKey = Base64.encode(privKey.getEncoded());
 
+        // concatinate base64 encoded keys to one String
         String keyPair = new String(base64EncodedPubKey, "US-ASCII") + "|" + new String(base64EncodedPrivKey, "US-ASCII");
 
         return new TransferableCryptoDetails("keyPair", keyPair, cryptoSettings);
     }
 
+    /**
+     * generate a SecureRandom Instance for usage with KeyPairs
+     * @return
+     */
     public static SecureRandom generateSecureRandom() {
         SecureRandom retSecRand = null;
         try {
@@ -62,8 +75,6 @@ public class RSAKeyPair extends AbstractKeyPairGenerator {
             byte[] bytes = new byte[512];
             secureRandom.nextBytes(bytes);
             retSecRand = secureRandom;
-            // Printing the SecureRandom number by calling secureRandom.nextDouble()
-
         } catch (NoSuchAlgorithmException noSuchAlgo)
         {
             System.out.println(" No Such Algorithm exists " + noSuchAlgo);

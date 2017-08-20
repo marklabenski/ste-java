@@ -5,8 +5,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import ste.crypto.methods.symmetric.AbstractPBCryptoMethod;
-import ste.crypto.methods.symmetric.SHAAndAES;
-import ste.crypto.methods.symmetric.SHAAndDES;
+import ste.crypto.methods.symmetric.MD5AndDES;
 import ste.crypto.settings.CryptoSettings;
 import ste.crypto.transfer.TransferableCryptoDetails;
 
@@ -20,7 +19,7 @@ import static junit.framework.TestCase.assertNotNull;
 * @since <pre>Aug 20, 2017</pre> 
 * @version 1.0 
 */ 
-public class SHAAndDESTest {
+public class MD5AndDESTest {
     AbstractPBCryptoMethod algorithm;
     CryptoSettings cryptoSettings;
     private static final String PASSWORD = "password";
@@ -30,7 +29,7 @@ public class SHAAndDESTest {
 
 @Before
 public void before() throws Exception {
-    algorithm = new SHAAndDES();
+    algorithm = new MD5AndDES();
     cryptoSettings = new CryptoSettings();
     cryptoSettings.addOption("password", new String(Base64.encode(PASSWORD.getBytes("UTF-8"))));
     cryptoSettings.addOption("salt", new String(Base64.encode(SALT.getBytes("UTF-8"))));

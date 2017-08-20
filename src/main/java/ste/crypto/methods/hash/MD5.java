@@ -1,26 +1,18 @@
 package ste.crypto.methods.hash;
 
-import org.bouncycastle.util.encoders.Base64;
 import ste.crypto.methods.AlgoMethodDescription;
 import ste.crypto.methods.CryptoMethod;
 import ste.crypto.methods.MethodOptionDescription;
-import ste.crypto.methods.symmetric.AbstractSymmetricCryptoMethod;
 import ste.crypto.settings.CryptoSettings;
 import ste.crypto.transfer.TransferableCryptoDetails;
-
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
-import java.security.Key;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.HashMap;
 
 /**
- * Created by marklabenski on 04.07.17.
+ * MD5 implementation
+ *
+ * @author Mark Labenski
  */
 public class MD5 extends AbstractMessageDigestMethod {
     static {
@@ -43,7 +35,7 @@ public class MD5 extends AbstractMessageDigestMethod {
         MessageDigest md = MessageDigest.getInstance("MD5");
         Integer iterationCount = Integer.parseInt(cryptoSettings.getStringOption("iterationCount"));
 
-        //byte[] key = Base64.decode(cryptoSettings.getStringOption("key").getBytes("UTF-8"));
+        // hash the input as often as given in "iterationCount" option
         for(Integer i = 0; i < iterationCount; i++) {
             md.update(input.getBytes());
         }

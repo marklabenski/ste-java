@@ -4,8 +4,18 @@ import ste.crypto.settings.CryptoSettings;
 import ste.crypto.transfer.TransferableCryptoDetails;
 
 /**
- * Created by marklabenski on 28.06.17.
+ * Ability to encrypt a plaintext and return cryptodetails containing the ciphertext with given settings
+ *
+ * @author Mark Labenski
  */
 public interface Encryptable {
-    public TransferableCryptoDetails encrypt(CryptoSettings cryptoSettings, String plainText) throws Exception;
+    /**
+     * cryptographic encryptoin of a given ciphertext according to settings depending on implementation uses
+     *
+     * @param cryptoSettings
+     * @param plainText
+     * @return Settings and ciphertext in payload
+     * @throws Exception
+     */
+    TransferableCryptoDetails encrypt(CryptoSettings cryptoSettings, String plainText) throws Exception;
 }

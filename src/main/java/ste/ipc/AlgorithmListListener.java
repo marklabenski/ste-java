@@ -1,30 +1,44 @@
 package ste.ipc;
 
-import org.json.JSONObject;
 import ste.crypto.AvailableCryptoMethods;
-
 import java.util.Arrays;
 
 /**
- * Created by marklabenski on 24.05.17.
+ * listen for consumer who needs the list of available algorithms
+ *
+ * @author Mark Labenski
  */
 public class AlgorithmListListener extends AbstractListener {
-    private final String EVENT_NAME = "list-algorithms";
+    /**
+     * name of the listen event
+     */
+    private final String EVENT_NAME = "info.list-algorithms";
 
+    /**
+     * name of the reaction event
+     */
     private final String EMIT_EVENT_NAME = "info.list-algorithms";
 
-    public AlgorithmListListener(SocketIPCClient _socketClientInstance) {
+    /**
+     * constructor with getting client instance and defines event name
+     *
+     * @param _socketClientInstance
+     */
+    AlgorithmListListener(SocketIPCClient _socketClientInstance) {
         super(_socketClientInstance);
 
         this.eventName = this.EVENT_NAME;
     }
 
+    /**
+     * return the list of available algorithms on listen event emit
+     *
+     * @param objects objects in JSON format
+     */
     public void call(Object... objects) {
-        JSONObject algorithmListObj = null;
         try {
-            AvailableCryptoMethods algos = new AvailableCryptoMethods();
-            System.out.println("oh my god! list the algorithms");
-            this.socketClientInstance.emitEvent(this.EMIT_EVENT_NAME, algos.getAllAvailableCryptoMethodsJSON());
+            AvailableCryptoMethods algorithms = new AvailableCryptoMethods();
+            this.socketClientInstance.emitEvent(this.EMIT_EVENT_NAME, algorithms.getAllAvailableCryptoMethodsJSON());
         } catch (Exception e) {
             System.err.println("1");
             System.err.println(e);

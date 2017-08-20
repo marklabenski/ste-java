@@ -7,14 +7,21 @@ import ste.crypto.settings.CryptoSettings;
 import ste.crypto.transfer.TransferableCryptoDetails;
 
 /**
- * Created by marklabenski on 28.06.17.
+ * Asymmetric cryptography method that can encrypt and decrypt
+ *
+ * @author Mark Labenski
  */
 public abstract class AbstractAsymmetricCryptoMethod extends CryptoMethod implements Decryptable, Encryptable {
-
+    /**
+     * @see ste.crypto.abilities.Decryptable
+     */
     public TransferableCryptoDetails decrypt(CryptoSettings cryptoSettings, String ciptherText) throws Exception {
         return null;
     }
 
+    /**
+     * @see ste.crypto.abilities.Encryptable
+     */
     public TransferableCryptoDetails encrypt(CryptoSettings cryptoSettings, String plainText) throws Exception {
         return null;
     }
