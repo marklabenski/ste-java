@@ -1,39 +1,33 @@
 package ste.ipc;
 
 import org.json.JSONObject;
+import ste.crypto.AvailableCryptoMethods;
 import ste.crypto.CryptoBackend;
 import ste.crypto.FileEncryptionSettingsTransferObject;
 
+import java.security.InvalidKeyException;
 import java.util.Arrays;
 
 /**
  * Created by marklabenski on 24.05.17.
  */
-public class FileEncryptListener extends AbstractListener {
-    private final String EVENT_NAME = "file.encrypt";
+public class AlgorithmListListener extends AbstractListener {
+    private final String EVENT_NAME = "list-algorithms";
 
-    private final String FILE_ENCRYPTED_EVENT = "file.encrypted";
+    private final String EMIT_EVENT_NAME = "info.list-algorithms";
 
-    public FileEncryptListener (SocketIPCClient _socketClientInstance) {
+    public AlgorithmListListener(SocketIPCClient _socketClientInstance) {
         super(_socketClientInstance);
 
         this.eventName = this.EVENT_NAME;
     }
 
     public void call(Object... objects) {
+        JSONObject algorithmListObj = null;
         try {
-            JSONObject fileToEncryptObj = (JSONObject) objects[0];
-            FileEncryptionSettingsTransferObject encryptionSettings = new FileEncryptionSettingsTransferObject(fileToEncryptObj);
-
-            String fileContent = fileToEncryptObj.getString("fileContent");
-
-            CryptoBackend crypt = CryptoBackend.getInstance();
-            String secret = crypt.simpleEncrypt(encryptionSettings, fileContent);
-
-            fileToEncryptObj.remove("fileContent");
-            fileToEncryptObj.put("secret", secret);
-
-            this.socketClientInstance.emitEvent(this.FILE_ENCRYPTED_EVENT, fileToEncryptObj);
+            AvailableCryptoMethods algos = new AvailableCryptoMethods();
+            System.out.println("oh my god! list the algorithms");
+            this.socketClientInstance.emitEvent(this.EMIT_EVENT_NAME, algos.getAllAvailableCryptoMethodsJSON());
         } catch (Exception e) {
             System.err.println("1");
             System.err.println(e);

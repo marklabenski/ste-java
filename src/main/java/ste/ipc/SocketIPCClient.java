@@ -4,6 +4,7 @@ import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 import org.json.JSONObject;
+import ste.crypto.AvailableCryptoMethods;
 import ste.crypto.CryptoBackend;
 
 import javax.swing.*;
@@ -72,12 +73,14 @@ public class SocketIPCClient {
     }
 
     private void attachAllListeners() {
-        listenerList.add(new FileEncryptListener(this));
-        listenerList.add(new FileDecryptListener(this));
-        //..
-    };
+
+
+        listenerList.add(new AlgorithmListListener(this));
+        listenerList.add(new AlgorithmListener(this));
+    }
 
     private void attachListenerToSocket(AbstractListener listener) {
+
         socket.on(listener.eventName, listener);
     }
 

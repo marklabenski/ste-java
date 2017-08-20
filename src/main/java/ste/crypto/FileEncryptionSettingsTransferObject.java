@@ -17,6 +17,8 @@ public class FileEncryptionSettingsTransferObject {
 
     public String key;
 
+    public String keyLengthInBytes;
+
     public FileEncryptionSettingsTransferObject(JSONObject inputJSON) {
         enrichSettingsFromInputJSON(inputJSON);
     }
@@ -26,8 +28,16 @@ public class FileEncryptionSettingsTransferObject {
 
         this.cipherSuite = this.encryptionSettings.getString("cipherSuite");
         this.fileName = this.encryptionSettings.getString("fileName");
-        this.key = this.encryptionSettings.getString("key");
+        this.keyLengthInBytes = this.encryptionSettings.getString("keyLength");
+        if(this.encryptionSettings.has("key")) {
+            this.key = this.encryptionSettings.getString("key");
+        }
         this.keySuite = this.encryptionSettings.getString("keySuite");
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+        this.encryptionSettings.put("key", this.key);
     }
 
     public JSONObject getJSONData() {
