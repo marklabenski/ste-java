@@ -15,6 +15,8 @@ import ste.crypto.methods.hash.SHA2;
 import ste.crypto.methods.symmetric.*;
 import ste.crypto.settings.CryptoSettings;
 import ste.crypto.transfer.TransferableCryptoDetails;
+
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -44,7 +46,7 @@ public class AvailableCryptoMethods {
         // symmetric crypto
         cryptoMethodInstances.put("DES", new DES());
         cryptoMethodInstances.put("AES", new AES());
-        cryptoMethodInstances.put("PBEWithSHA1And128BitAES-CBC-BC", new SHAAndAES());
+        cryptoMethodInstances.put("PBEWithSHA1And128BitAES_CBC_BC", new SHAAndAES());
         cryptoMethodInstances.put("PBEWithMD5AndDES", new MD5AndDES());
         cryptoMethodInstances.put("PBEWithSHAAnd40BitRC4", new SHAAndRC4());
 
@@ -104,13 +106,25 @@ public class AvailableCryptoMethods {
                     break;
             }
         }
-        catch (Exception e) { System.out.println(e); }
+        catch (Exception e) { System.err.println("1");
+            System.err.println(e);
+            System.err.println("\n2");
+            System.err.println(e.getMessage());
+            System.err.println("\n3");
+            System.err.println(e.getLocalizedMessage());
+            System.err.println("\n4");
+            System.err.println(e.getCause());
+            System.err.println("\n5");
+            System.err.println(Arrays.toString(e.getStackTrace()));
+            System.err.println("\n6");
+            e.printStackTrace(); }
 
         // put settings and returnvalue into the returning JSONObject
         if(details != null) {
             result.put("settings", details.settings.serialize());
             result.put("return", details.payload);
         }
+        System.out.println(result);
 
         return result;
     }

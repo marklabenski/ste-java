@@ -111,6 +111,11 @@ public class AES extends AbstractSymmetricCryptoMethod {
      * @return suitable instance String for JCA
      */
     private String getCipherSuiteFromCryptoSettings(CryptoSettings settings) {
-        return "AES" + "/" + settings.getStringOption("blockMode") + "/" + settings.getStringOption("padding");
+        String blockMode = settings.getStringOption("blockMode");
+        String padding = settings.getStringOption("padding");
+        if(settings.getStringOption("blockMode").equals("GCM")) {
+            padding = "NoPadding";
+        }
+        return "AES" + "/" + blockMode + "/" + padding;
     }
 }

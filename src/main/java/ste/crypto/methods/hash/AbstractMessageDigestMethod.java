@@ -33,6 +33,7 @@ public abstract class AbstractMessageDigestMethod extends CryptoMethod implement
      * @throws Exception
      */
     public String convertDigestBytesToBase64String(byte[] digest) throws Exception {
+        System.out.println(digest);
         byte[] convertedHexValue = DatatypeConverter.printHexBinary(digest).toLowerCase().getBytes();
 
         return new String(Base64.encode(convertedHexValue), "UTF-8");

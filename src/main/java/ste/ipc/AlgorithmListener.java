@@ -41,15 +41,28 @@ public class AlgorithmListener extends AbstractListener {
             // first parameter is JSONObject of algorithm information and settings
             JSONObject execAlgoObj = (JSONObject) objects[0];
 
+            System.out.println("event emitted");
+            System.out.println(execAlgoObj);
+
             execAlgoObj.getString("algorithm");
             execAlgoObj.getJSONObject("options");
 
+            JSONObject algorithmResult = null;
+
             // call algorithm method
-            JSONObject algorithmResult = AvailableCryptoMethods.getInstance().executeAlgorithmMethod(
-                    execAlgoObj.getString("algorithm"),
-                    execAlgoObj.getString("method"),
-                    execAlgoObj.getJSONArray("parameters"),
-                    execAlgoObj.getJSONObject("options"));
+            if(!execAlgoObj.has("parameters")) {
+                algorithmResult = AvailableCryptoMethods.getInstance().executeAlgorithmMethod(
+                        execAlgoObj.getString("algorithm"),
+                        execAlgoObj.getString("method"),
+                        null,
+                        execAlgoObj.getJSONObject("options"));
+            } else {
+                algorithmResult = AvailableCryptoMethods.getInstance().executeAlgorithmMethod(
+                        execAlgoObj.getString("algorithm"),
+                        execAlgoObj.getString("method"),
+                        execAlgoObj.getJSONArray("parameters"),
+                        execAlgoObj.getJSONObject("options"));
+            }
 
             // emit reaction event and pass result
             this.socketClientInstance.emitEvent(this.EMIT_EVENT_NAME, algorithmResult);

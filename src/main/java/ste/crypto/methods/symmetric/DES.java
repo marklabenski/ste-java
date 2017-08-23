@@ -66,7 +66,7 @@ public class DES extends AbstractSymmetricCryptoMethod {
             cipher.init(Cipher.DECRYPT_MODE, spec, new IvParameterSpec(ivBytes));
         }
 
-        byte[] base64DecodedCipherText = Base64.decode(cipherText.getBytes());
+        byte[] base64DecodedCipherText = Base64.decode(cipherText.getBytes("UTF-8"));
         byte[] plainText = cipher.doFinal(base64DecodedCipherText);
 
         return new TransferableCryptoDetails("plainText", new String(plainText, "US-ASCII"), cryptoSettings);
